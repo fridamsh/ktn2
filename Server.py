@@ -1,23 +1,16 @@
-'''
-KTN-project 2013 / 2014
-Very simple server implementation that should serve as a basis
-for implementing the chat server
-'''
 import SocketServer
 import json
 import time
 import datetime
 import re
 
-'''
-The RequestHandler class for our server.
-It is instantiated once per connection to the server, and must
-override the handle() method to implement communication to the
-client.
-'''
-
-
 class ClientHandler(SocketServer.BaseRequestHandler):
+    """
+    This is the ClientHandler class. Everytime a new client connects to the
+    server, a new ClientHandler object will be created. This class represents
+    only connected clients, and not the server itself. If you want to write
+    logic for the server, you must write it outside this class
+    """
 
     def printPretty(self, message, username, timestamp):
         return timestamp + " " + username + ' | ' + message
@@ -103,12 +96,13 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 
 
 if __name__ == "__main__":
-    #HOST = 'localhost'
-    HOST = '78.91.48.164'
-    PORT = 9999
 
-    # Create the server, binding to localhost on port 9999
+    #HOST = '78.91.48.164'
+
+    HOST, PORT = 'localhost', 9999
+
+    print 'Server running...'
+
+    # Set up and initiate the TCP server
     server = ThreadedTCPServer((HOST, PORT), ClientHandler)
-    # Activate the server; this will keep running until you
-    # interrupt the program with Ctrl-C
     server.serve_forever()
