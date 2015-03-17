@@ -53,6 +53,17 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             return_data = {'response': 'message', 'message': message}
             self.server.broadcast(json.dumps(return_data))
 
+    def getNames(self):
+        #username = self.server.clients[self.connection]
+        names = self.server.clients.values()
+        return_data = {'timestamp':'x', 'username':'username', 'response':'names', 'content':names}
+        self.connection.sendall(json.dumps(return_data))
+
+    def getHelp(self):
+        info = 'Type *login <username> to log in. \n Type *logout to log out. \n Type *names to get a list of active clients. \n Type *exit to close the AwzmChat<3. \n To chat; just chat.'
+        return_data = {'timestamp':'x', 'username':'username', 'response':'help', 'content':info}
+        self.connection.sendall(json.dumps(return_data))
+
     def handle(self):
         self.connection = self.request
         self.ip = self.client_address[0]
@@ -72,6 +83,10 @@ class ClientHandler(SocketServer.BaseRequestHandler):
                     self.login(json_object)
                 elif request == 'logout':
                     self.logout()
+                elif request == 'names':
+                    self.getNames()
+                elif request == 'help':
+                    self.getHelp()
                 elif request == 'message':
                     self.send_message(json_object)
             else:
@@ -79,9 +94,9 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
         print 'Client disconnected @' + self.ip + ':' + str(self.port)
     
-    #def finish(self):
-    #    if self.connection in self.server.clients:
-    #        del self.server.clients[self.connection]
+    def finish(self):
+        if self.connection in self.server.clients:
+            del self.server.clients[self.connection]
 
 
 

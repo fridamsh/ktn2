@@ -18,6 +18,7 @@ class Client(object):
         serverThread.start()
 
         print "Welcome to AwzmChat<3 write something awezome - aand be awezome."
+        print "Type ---> *help <--- to see what you can do in AwzmChat<3."
         print "Received thread: ", serverThread.name
 
     def receive_message(self, message, connection):
@@ -33,6 +34,11 @@ class Client(object):
             print "Byebye " + response.get('username')
         elif response.get('response') == 'message':
             print response.get('message')
+        elif response.get('response') == 'help':
+            print response.get('content')
+        elif response.get('response') == 'names':
+            for name in response.get('content'):
+                print name + '\n'
 
     #def connection_closed(self, connection):
     #    connection.close()
@@ -46,6 +52,10 @@ class Client(object):
             data = {'request': 'login', 'username': username}
         elif data.startswith("*logout"):
             data = {'request': 'logout'}
+        elif data.startswith("*names"):
+            data = {'request':'names'}
+        elif data.startswith("*help"):
+            data = {'request':'help'}
         else:
             data = {'request': 'message', 'message': data}
 
@@ -57,8 +67,8 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
-    #client.start('localhost', 9999)
-    client.start('78.91.48.164', 9999)
+    client.start('localhost', 9999)
+    #client.start('78.91.69.142', 9999)
 
     while True:
         message = raw_input('-- ')
