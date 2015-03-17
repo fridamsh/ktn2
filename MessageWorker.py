@@ -16,9 +16,9 @@ import threading
 
 
 class MessageReceiver(threading.Thread):
-    def __init__(self, listener, connection):
+    def __init__(self, client, connection):
         self.daemeon = True
-        self.listener = listener
+        self.listener = client
         self.connection = connection
         super(MessageReceiver, self).__init__()
 

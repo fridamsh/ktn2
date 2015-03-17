@@ -22,13 +22,10 @@ class ClientHandler(SocketServer.BaseRequestHandler):
     def printPretty(self, message, username, timestamp):
         return timestamp + " " + username + ' | ' + message
 
-    def timestamp(self):
-        return str(datetime.now().strftime('%Y/%m/%d %H:%M'))
-
     def login(self, json_object):
         username = json_object.get('username')
-        pattern = '^\w+$'
-        if not re.match(pattern, username):
+        if not re.match('[A-Za-z0-9_]{2,}', username):
+            #return_data = {'timestamp':timestamp(), 'sender':username, 'response':'error', 'content':'invalid username :('}
             return_data = {'response': 'login', 'error': 'Invalid username!', 'username': username}
             self.connection.sendall(json.dumps(return_data))
         elif username in self.server.clients.values():
@@ -40,7 +37,6 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.connection.sendall(json.dumps(return_data))
 
     def logout(self):
-
         if not self.connection in self.server.clients:
             return_data = {'response': 'logout', 'error': 'Not logged in!'}
             self.connection.sendall(json.dumps(return_data))
@@ -65,11 +61,8 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.server.broadcast(json.dumps(return_data))
 
     def handle(self):
-        # Get a reference to the socket object
         self.connection = self.request
-        # Get the remote ip adress of the socket
         self.ip = self.client_address[0]
-        # Get the remote port number of the socket
         self.port = self.client_address[1]
 
         print 'Client connected @' + self.ip + ':' + str(self.port)
@@ -92,9 +85,10 @@ class ClientHandler(SocketServer.BaseRequestHandler):
                 break
 
         print 'Client disconnected @' + self.ip + ':' + str(self.port)
-    def finish(self):
-        if self.connection in self.server.clients:
-            del self.server.clients[self.connection]
+    
+    #def finish(self):
+    #    if self.connection in self.server.clients:
+    #        del self.server.clients[self.connection]
 
 
 
@@ -109,7 +103,8 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 
 
 if __name__ == "__main__":
-    HOST = 'localhost'
+    #HOST = 'localhost'
+    HOST = '78.91.48.164'
     PORT = 9999
 
     # Create the server, binding to localhost on port 9999

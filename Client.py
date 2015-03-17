@@ -34,8 +34,8 @@ class Client(object):
         elif response.get('response') == 'message':
             print response.get('message')
 
-    def connection_closed(self, connection):
-        connection.close()
+    #def connection_closed(self, connection):
+    #    connection.close()
 
     def send(self, data):
         if data.startswith("*login"):
@@ -51,13 +51,14 @@ class Client(object):
 
         self.connection.sendall(json.dumps(data))
 
-    def force_disconnect(self):
+    def disconnect(self):
         self.connection.close()
 
 
 if __name__ == "__main__":
     client = Client()
-    client.start('localhost', 9999)
+    #client.start('localhost', 9999)
+    client.start('78.91.48.164', 9999)
 
     while True:
         message = raw_input('-- ')
@@ -66,4 +67,4 @@ if __name__ == "__main__":
         if message == '*exit':
             break
 
-    client.force_disconnect()
+    client.disconnect()
