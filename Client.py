@@ -37,6 +37,7 @@ class Client(object):
         elif response.get('response') == 'help':
             print response.get('content')
         elif response.get('response') == 'names':
+            print "These are logged in:"
             for name in response.get('content'):
                 print name
 
@@ -67,7 +68,7 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
-    client.start('localhost', 9999)
+    client.start('78.91.68.195', 9999)
     #client.start('78.91.68.195', 9999)
 
     while True:
