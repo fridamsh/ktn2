@@ -18,14 +18,14 @@ class Client(object):
         serverThread.daemon = True
         serverThread.start()
 
-        print "-------------------------------------------------------"
+        print "---------------------------------------------------------------------"
         print "     __       "
         print "    /  \       "
         print "   / /\ \                 ______       "
-        print "  / /__\ \     _      _   \__  /      --  --    "
+        print "  / /__\ \     _      _   \__  /      __  __    "
         print " / _____  \    \ \ _ / /    / /__    /  \/  \   "
         print "/_/      \_\    \_/ \_/    /____/   /_/\__/\_\ "
-        print "--------------------------------------------------------"
+        print "---------------------------------------------------------------------"
         print
         print
         print "Welcome to AwzmChat"+u"\u2661"+"  write something awezome - aand be awezome."
