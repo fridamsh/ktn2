@@ -1,6 +1,7 @@
 import socket
 import json
 from MessageWorker import MessageReceiver
+# -*- coding: utf-8 -*-
 
 class Client(object):
     """
@@ -17,8 +18,18 @@ class Client(object):
         serverThread.daemon = True
         serverThread.start()
 
-        print "Welcome to AwzmChat<3 write something awezome - aand be awezome."
-        print "Type ---> *help <--- to see what you can do in AwzmChat<3."
+        print "-------------------------------------------------------"
+        print "     __       "
+        print "    /  \       "
+        print "   / /\ \                 ______       "
+        print "  / /__\ \     _      _   \__  /      --  --    "
+        print " / _____  \    \ \ _ / /    / /__    /  \/  \   "
+        print "/_/      \_\    \_/ \_/    /____/   /_/\__/\_\ "
+        print "--------------------------------------------------------"
+        print
+        print
+        print "Welcome to AwzmChat"+u"\u2661"+"  write something awezome - aand be awezome."
+        print "Type "+u"\u2192"+" *help " + u"\u2190"+"  to see what you can do in AwzmChat" + u"\u2661"
         
 
     def receive_message(self, message, connection):
@@ -27,7 +38,7 @@ class Client(object):
         if response.get('error') is not None:
             print response.get('error')
         elif response.get('response') == 'login':
-            print "Welcome, " + response.get('username') + ", to AwzmChat<3"
+            print "Welcome, " + response.get('username') + ", to AwzmChat" + u"\u2661"
             for message in response.get('messages'):
                 print message
         elif response.get('response') == 'logout':
@@ -39,7 +50,7 @@ class Client(object):
         elif response.get('response') == 'names':
             print "These are logged in:"
             for name in response.get('content'):
-                print "- "+name
+                print u"\u2661"+" "+name
 
     #def connection_closed(self, connection):
     #    connection.close()
