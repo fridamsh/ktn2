@@ -115,7 +115,8 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 
     def broadcast(self, message):
         for client in self.clients:
-            client.sendall(message)
+            if not message.startswith("Cannot send empty message"):
+                client.sendall(message)
 
 
 if __name__ == "__main__":
