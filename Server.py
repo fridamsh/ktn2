@@ -51,11 +51,14 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         else:
             username = self.server.clients[self.connection]
             json_message = json_object.get('message')
-            ts = time.time()
-            st = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
-            message = self.printPretty(json_message, username, st)
-            self.server.messages.append(message)
-            return_data = {'response': 'message', 'message': message}
+            if json_message=='':
+                return_data = {'response': 'message', 'error': 'Cannot send empty message'}
+            else:
+                ts = time.time()
+                st = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
+                message = self.printPretty(json_message, username, st)
+                self.server.messages.append(message)
+                return_data = {'response': 'message', 'message': message}
             self.server.broadcast(json.dumps(return_data))
 
     def getNames(self):
@@ -65,7 +68,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         self.connection.sendall(json.dumps(return_data))
 
     def getHelp(self):
-        info = '\nType *login <username> to log in. \n Type *logout to log out. \n Type *names to get a list of active clients. \n Type *exit to close the AwzmChat<3. \n To chat; just chat.'
+        info = '\nType *login <username> to log in. \nType *logout to log out. \nType *names to get a list of active clients. \nType *exit to close the AwzmChat<3. \nTo chat; just chat.'
         return_data = {'timestamp':'x', 'username':'username', 'response':'help', 'content':info}
         self.connection.sendall(json.dumps(return_data))
 
@@ -112,7 +115,7 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 
     def broadcast(self, message):
         for client in self.clients:
-            client.sendall('   '+message)
+            client.sendall(message)
 
 
 if __name__ == "__main__":

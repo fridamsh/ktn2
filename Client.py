@@ -39,7 +39,7 @@ class Client(object):
         elif response.get('response') == 'names':
             print "These are logged in:"
             for name in response.get('content'):
-                print name
+                print "- "+name
 
     #def connection_closed(self, connection):
     #    connection.close()
@@ -53,7 +53,7 @@ class Client(object):
             data = {'request': 'login', 'username': username}
         elif data.startswith("*logout"):
             data = {'request': 'logout'}
-        elif data.startswith("*names"):
+        elif data == "*names":
             data = {'request':'names'}
         elif data.startswith("*help"):
             data = {'request':'help'}
