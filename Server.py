@@ -112,7 +112,7 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 
     def broadcast(self, message):
         for client in self.clients:
-            client.sendall(message)
+            client.sendall('   '+message)
 
 
 if __name__ == "__main__":
