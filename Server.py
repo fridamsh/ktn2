@@ -23,7 +23,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             #return_data = {'timestamp':timestamp(), 'sender':username, 'response':'error', 'content':'invalid username :('}
             return_data = {'timestamp': timestamp, 'response': 'login', 'error': 'Invalid username!', 'username': username}
             self.connection.sendall(json.dumps(return_data))
-        elif username in self.server.clients.values():
+        elif username.lower() in self.server.clients.values():
             return_data = {'timestamp': timestamp, 'response': 'login', 'error': 'Name already taken!', 'username': username}
             self.connection.sendall(json.dumps(return_data))
         else:
