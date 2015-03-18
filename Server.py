@@ -17,19 +17,23 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
     def login(self, json_object):
         username = json_object.get('username')
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         if not re.match('[A-Za-z0-9_]{2,}', username):
             #return_data = {'timestamp':timestamp(), 'sender':username, 'response':'error', 'content':'invalid username :('}
-            return_data = {'response': 'login', 'error': 'Invalid username!', 'username': username}
+            return_data = {'timestamp': timestamp, 'response': 'login', 'error': 'Invalid username!', 'username': username}
             self.connection.sendall(json.dumps(return_data))
         elif username in self.server.clients.values():
-            return_data = {'response': 'login', 'error': 'Name already taken!', 'username': username}
+            return_data = {'timestamp': timestamp, 'response': 'login', 'error': 'Name already taken!', 'username': username}
             self.connection.sendall(json.dumps(return_data))
         else:
             self.server.clients[self.connection] = username
-            return_data = {'response': 'login', 'username': username, 'messages': self.server.messages}
+            return_data = {'timestamp':timestamp, 'response': 'login', 'username': username, 'messages': self.server.messages}
             self.connection.sendall(json.dumps(return_data))
 
     def logout(self):
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         if not self.connection in self.server.clients:
             return_data = {'response': 'logout', 'error': 'Not logged in!'}
             self.connection.sendall(json.dumps(return_data))
