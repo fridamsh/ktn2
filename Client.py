@@ -19,7 +19,7 @@ class Client(object):
 
         print "Welcome to AwzmChat<3 write something awezome - aand be awezome."
         print "Type ---> *help <--- to see what you can do in AwzmChat<3."
-        print "Received thread: ", serverThread.name
+        
 
     def receive_message(self, message, connection):
         response = json.loads(message)
