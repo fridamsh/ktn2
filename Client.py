@@ -38,7 +38,7 @@ class Client(object):
             print response.get('content')
         elif response.get('response') == 'names':
             for name in response.get('content'):
-                print name + '\n'
+                print name
 
     #def connection_closed(self, connection):
     #    connection.close()
@@ -68,7 +68,7 @@ class Client(object):
 if __name__ == "__main__":
     client = Client()
     client.start('localhost', 9999)
-    #client.start('78.91.69.142', 9999)
+    #client.start('78.91.68.195', 9999)
 
     while True:
         message = raw_input('-- ')
