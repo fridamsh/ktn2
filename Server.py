@@ -17,6 +17,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
     def login(self, json_object):
         username = json_object.get('username')
+        username.lower()
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         if not re.match('[A-Za-z0-9_]{2,}', username):
