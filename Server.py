@@ -60,7 +60,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         self.connection.sendall(json.dumps(return_data))
 
     def getHelp(self):
-        info = 'Type *login <username> to log in. \n Type *logout to log out. \n Type *names to get a list of active clients. \n Type *exit to close the AwzmChat<3. \n To chat; just chat.'
+        info = '\nType *login <username> to log in. \n Type *logout to log out. \n Type *names to get a list of active clients. \n Type *exit to close the AwzmChat<3. \n To chat; just chat.'
         return_data = {'timestamp':'x', 'username':'username', 'response':'help', 'content':info}
         self.connection.sendall(json.dumps(return_data))
 
