@@ -53,13 +53,14 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             json_message = json_object.get('message')
             if json_message=='':
                 return_data = {'response': 'message', 'error': 'Cannot send empty message'}
+                self.connection.sendall(json.dumps(return_data))
             else:
                 ts = time.time()
                 st = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
                 message = self.printPretty(json_message, username, st)
                 self.server.messages.append(message)
                 return_data = {'response': 'message', 'message': message}
-            self.server.broadcast(json.dumps(return_data))
+                self.server.broadcast(json.dumps(return_data))
 
     def getNames(self):
         #username = self.server.clients[self.connection]
