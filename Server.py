@@ -69,7 +69,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         self.connection.sendall(json.dumps(return_data))
 
     def getHelp(self):
-        info = '\nType *login <username> to log in. \nType *logout to log out. \nType *names to get a list of active clients. \nType *exit to close the AwzmChat'+u"\u2661"+' \nTo chat; just chat.'
+        info = '\nType *login <username> to log in. \nType *logout to log out. \nType *names to get a list of active clients. \nType *exit to close the AwzmChat<3 \nTo chat; just chat.'
         return_data = {'timestamp':'x', 'username':'username', 'response':'help', 'content':info}
         self.connection.sendall(json.dumps(return_data))
 
@@ -124,7 +124,7 @@ if __name__ == "__main__":
 
     #HOST = '78.91.48.164'
 
-    HOST, PORT = '78.91.68.195', 9999
+    HOST, PORT = '78.91.71.85', 9999
 
     print 'Server running...'
 

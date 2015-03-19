@@ -28,9 +28,10 @@ class Client(object):
         print "---------------------------------------------------------\/-----------"
         print
         print
-        print "Welcome to AwzmChat"+u"\u2661"+"  write something awezome - aand be awezome."
-        print "Type "+u"\u2192"+" *help " + u"\u2190"+"  to see what you can do in AwzmChat" + u"\u2661"
-        
+        print "Welcome to AwzmChat<3 write something awezome - aand be awezome."
+        print "Type -> *help <- to see what you can do in AwzmChat<3"
+        #print "Welcome to AwzmChat"+u"\u2661"+"  write something awezome - aand be awezome."
+        #print "Type "+u"\u2192"+" *help " + u"\u2190"+"  to see what you can do in AwzmChat" + u"\u2661"
 
     def receive_message(self, message, connection):
         response = json.loads(message)
@@ -38,7 +39,7 @@ class Client(object):
         if response.get('error') is not None:
             print response.get('error')
         elif response.get('response') == 'login':
-            print "Welcome, " + response.get('username') + ", to AwzmChat" + u"\u2661"
+            print "Welcome, " + response.get('username') + ", to AwzmChat<3"
             for message in response.get('messages'):
                 print message
         elif response.get('response') == 'logout':
@@ -50,7 +51,7 @@ class Client(object):
         elif response.get('response') == 'names':
             print "These are logged in:"
             for name in response.get('content'):
-                print u"\u2661"+" "+name
+                print "<3 "+name
 
     #def connection_closed(self, connection):
     #    connection.close()
@@ -79,7 +80,7 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
-    client.start('78.91.68.195', 9999)
+    client.start('78.91.71.85', 9999)
     #client.start('78.91.68.195', 9999)
 
     while True:
