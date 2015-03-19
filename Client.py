@@ -36,22 +36,27 @@ class Client(object):
     def receive_message(self, message, connection):
         response = json.loads(message)
 
-        if response.get('error') is not None:
-            print response.get('error')
-        elif response.get('response') == 'login':
-            print "Welcome, " + response.get('username') + ", to AwzmChat<3"
-            for message in response.get('messages'):
+        if response.get('response') == 'error':
+            print response.get('content')
+
+        elif response.get('response') == 'history':
+            print "Welcome, " + response.get('sender') + ", to AwzmChat<3"
+            for message in response.get('history'):
                 print message
-        elif response.get('response') == 'logout':
-            print "Byebye " + response.get('username')
+
+        elif response.get('response') == 'info':
+            print "Byebye " + response.get('sender')
+
         elif response.get('response') == 'message':
-            print response.get('message')
+            print response.get('content')
+
         elif response.get('response') == 'help':
             print response.get('content')
+
         elif response.get('response') == 'names':
             print "These are logged in:"
             for name in response.get('content'):
-                print "<3 "+name
+                print "<3 " + name
 
     #def connection_closed(self, connection):
     #    connection.close()
@@ -62,15 +67,15 @@ class Client(object):
                 username = data.split()[1]
             except IndexError:
                 username = ""
-            data = {'request': 'login', 'username': username}
+            data = {'request': 'login', 'content': username}
         elif data.startswith("*logout"):
-            data = {'request': 'logout'}
+            data = {'request': 'logout', 'content': None}
         elif data == "*names":
-            data = {'request':'names'}
+            data = {'request':'names', 'content': None}
         elif data.startswith("*help"):
-            data = {'request':'help'}
+            data = {'request':'help', 'content': None}
         else:
-            data = {'request': 'message', 'message': data}
+            data = {'request': 'msg', 'content': data}
 
         self.connection.sendall(json.dumps(data))
 
@@ -80,8 +85,8 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
+    #client.start('localhost', 9999)
     client.start('78.91.71.85', 9999)
-    #client.start('78.91.68.195', 9999)
 
     while True:
         message = raw_input('-- ')
