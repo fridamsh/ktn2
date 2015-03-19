@@ -80,7 +80,7 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
-    client.start('78.91.71.85', 9999)
+    client.start('localhost', 9999)
     #client.start('78.91.68.195', 9999)
 
     while True:

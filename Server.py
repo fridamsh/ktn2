@@ -124,7 +124,7 @@ if __name__ == "__main__":
 
     #HOST = '78.91.48.164'
 
-    HOST, PORT = '78.91.71.85', 9999
+    HOST, PORT = 'localhost', 9999
 
     print 'Server running...'
 
