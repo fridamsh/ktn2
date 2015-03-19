@@ -16,61 +16,68 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         return timestamp + " " + username + ' | ' + message
 
     def login(self, json_object):
-        username = json_object.get('username')
+        username = json_object.get('content')
         username.lower()
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         if not re.match('[A-Za-z0-9_]{2,}', username):
             #return_data = {'timestamp':timestamp(), 'sender':username, 'response':'error', 'content':'invalid username :('}
-            return_data = {'timestamp': timestamp, 'response': 'login', 'error': 'Invalid username!', 'username': username}
+            return_data = {'timestamp': timestamp, 'sender': username, 'response': 'error', 'content': 'Invalid username!'}
             self.connection.sendall(json.dumps(return_data))
         elif username.lower() in self.server.clients.values():
-            return_data = {'timestamp': timestamp, 'response': 'login', 'error': 'Name already taken!', 'username': username}
+            return_data = {'timestamp': timestamp, 'sender': username, 'response': 'error', 'content': 'Name already taken!'}
             self.connection.sendall(json.dumps(return_data))
         else:
+            #if self.server.messages != None:
             self.server.clients[self.connection] = username
-            return_data = {'timestamp':timestamp, 'response': 'login', 'username': username, 'messages': self.server.messages}
+            return_data = {'timestamp':timestamp, 'sender':username, 'response': 'history', 'content': self.server.messages}
             self.connection.sendall(json.dumps(return_data))
+            
+
 
     def logout(self):
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         if not self.connection in self.server.clients:
-            return_data = {'response': 'logout', 'error': 'Not logged in!'}
+            return_data = {'timestamp': timestamp, 'sender': '','response': 'error', 'content': 'Not logged in!'}
             self.connection.sendall(json.dumps(return_data))
         else:
             username = self.server.clients[self.connection]
-            return_data = {'response': 'logout', 'username': username}
+            return_data = {'timestamp': timestamp, 'sender': username, 'response': 'info', 'content': 'Logged out'}
             self.connection.sendall(json.dumps(return_data))
             del self.server.clients[self.connection]
 
     def send_message(self, json_object):
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         if not self.connection in self.server.clients:
-            return_data = {'response': 'message', 'error': 'Not logged in!'}
+            return_data = {'timestamp': timestamp, 'sender': '','response': 'error', 'content': 'Not logged in!'}
             self.connection.sendall(json.dumps(return_data))
         else:
             username = self.server.clients[self.connection]
-            json_message = json_object.get('message')
+            json_message = json_object.get('content')
             if json_message=='':
-                return_data = {'response': 'message', 'error': 'Cannot send empty message'}
+                return_data = {'timestamp': timestamp, 'sender':'','response': 'error', 'content': 'Cannot send empty message'}
                 self.connection.sendall(json.dumps(return_data))
             else:
-                ts = time.time()
-                st = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
-                message = self.printPretty(json_message, username, st)
+                message = self.printPretty(json_message, username, timestamp)
                 self.server.messages.append(message)
-                return_data = {'response': 'message', 'message': message}
+                return_data = {'timestamp': timestamp, 'sender':username,'response': 'message', 'content': message}
                 self.server.broadcast(json.dumps(return_data))
 
     def getNames(self):
         #username = self.server.clients[self.connection]
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         names = self.server.clients.values()
-        return_data = {'timestamp':'x', 'username':'username', 'response':'names', 'content':names}
+        return_data = {'timestamp':timestamp, 'sender':'username', 'response':'info', 'content':names}
         self.connection.sendall(json.dumps(return_data))
 
     def getHelp(self):
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         info = '\nType *login <username> to log in. \nType *logout to log out. \nType *names to get a list of active clients. \nType *exit to close the AwzmChat<3 \nTo chat; just chat.'
-        return_data = {'timestamp':'x', 'username':'username', 'response':'help', 'content':info}
+        return_data = {'timestamp':timestamp, 'sender':'username', 'response':'info', 'content':info}
         self.connection.sendall(json.dumps(return_data))
 
     def handle(self):
@@ -96,7 +103,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
                     self.getNames()
                 elif request == 'help':
                     self.getHelp()
-                elif request == 'message':
+                elif request == 'msg':
                     self.send_message(json_object)
             else:
                 break
