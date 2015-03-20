@@ -51,7 +51,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         if not self.connection in self.server.clients:
-            return_data = {'timestamp': timestamp, 'sender': '','response': 'error', 'content': 'Not logged in!'}
+            return_data = {'timestamp': timestamp, 'sender': '','response': 'error', 'content': 'Not logged in! Try *login <username> '}
             self.connection.sendall(json.dumps(return_data))
         else:
             username = self.server.clients[self.connection]
@@ -97,7 +97,7 @@ Type -> *help <- to see what you can do in AwzmChat<3"
     def getHelp(self):
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
-        info = '\nType *login <username> to log in. \nType *logout to log out. \nType *names to get a list of active clients. \nType *exit to close the AwzmChat<3 \nTo chat; just chat.'
+        info = '\nType *login <username> to log in. \nType *logout to log out. \nType *names to get a list of active clients. \nType *exit to close the AwzmChat<3 \nTo chat; just chat. (You have to login first)'
         return_data = {'timestamp':timestamp, 'sender':'username', 'response':'info', 'content':info}
         self.connection.sendall(json.dumps(return_data))
 
