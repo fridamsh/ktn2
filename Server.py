@@ -3,14 +3,9 @@ import json
 import time
 import datetime
 import re
+# -*- coding: utf-8 -*-
 
 class ClientHandler(SocketServer.BaseRequestHandler):
-    """
-    This is the ClientHandler class. Everytime a new client connects to the
-    server, a new ClientHandler object will be created. This class represents
-    only connected clients, and not the server itself. If you want to write
-    logic for the server, you must write it outside this class
-    """
 
     def printPretty(self, message, username, timestamp):
         return timestamp + " " + username + ' | ' + message
@@ -88,7 +83,6 @@ Type -> *help <- to see what you can do in AwzmChat<3"
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         names = self.server.clients.values()
-
         listNames = ""
         for name in names:
             listNames += "\n<3 "+name

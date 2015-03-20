@@ -4,9 +4,6 @@ from MessageWorker import MessageReceiver
 # -*- coding: utf-8 -*-
 
 class Client(object):
-    """
-    This is the chat client class
-    """
 
     def __init__(self):
         self.connection = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
