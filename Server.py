@@ -78,6 +78,8 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 ---------------------------------------------------------\/-----------\n\n\
 Welcome to AwzmChat<3 write something awezome - aand be awezome.\n\
 Type -> *help <- to see what you can do in AwzmChat<3"
+        #print "Welcome to AwzmChat"+u"\u2661"+"  write something awezome - aand be awezome."
+        #print "Type "+u"\u2192"+" *help " + u"\u2190"+"  to see what you can do in AwzmChat" + u"\u2661"
         return_data = {'timestamp': timestamp, 'sender': '','response': 'info', 'content': welcomeInfo}
         self.connection.sendall(json.dumps(return_data))
 
@@ -87,7 +89,6 @@ Type -> *help <- to see what you can do in AwzmChat<3"
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         names = self.server.clients.values()
 
-        print names[0]
         listNames = ""
         for name in names:
             listNames += "\n<3 "+name
@@ -107,9 +108,6 @@ Type -> *help <- to see what you can do in AwzmChat<3"
         self.port = self.client_address[1]
         self.welcome()
         print 'Client connected @' + self.ip + ':' + str(self.port)
-        # Wait for data from the client
-        # Check if the data exists
-        # (recv could have returned due to a disconnect)
 
         while True:
             data = self.connection.recv(1024).strip()
@@ -131,9 +129,9 @@ Type -> *help <- to see what you can do in AwzmChat<3"
 
         print 'Client disconnected @' + self.ip + ':' + str(self.port)
     
-    def finish(self):
-        if self.connection in self.server.clients:
-            del self.server.clients[self.connection]
+    # def finish(self):
+    #     if self.connection in self.server.clients:
+    #         del self.server.clients[self.connection]
 
 
 
@@ -152,12 +150,9 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 
 if __name__ == "__main__":
 
-    #HOST = '78.91.48.164'
-
     HOST, PORT = '78.91.69.239', 9999
 
     print 'Server running...'
 
-    # Set up and initiate the TCP server
     server = ThreadedTCPServer((HOST, PORT), ClientHandler)
     server.serve_forever()

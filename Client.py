@@ -18,21 +18,6 @@ class Client(object):
         serverThread.daemon = True
         serverThread.start()
 
-        # print "---------------------------------------------------------------------"
-        # print "     __                                              __      __"
-        # print "    /  \                                            /   \  /   \ "
-        # print "   / /\ \                  ______                  |     \/     |"
-        # print "  / /__\ \      _      _   \__  /     __  __        \          / "
-        # print " / _____  \    \ \ _ / /    / /__    /  \/  \         \      /"
-        # print "/_/      \_\    \_/ \_/    /____/   /_/\__/\_\          \  /"
-        # print "---------------------------------------------------------\/-----------"
-        # print
-        # print
-        # print "Welcome to AwzmChat<3 write something awezome - aand be awezome."
-        # print "Type -> *help <- to see what you can do in AwzmChat<3"
-        #print "Welcome to AwzmChat"+u"\u2661"+"  write something awezome - aand be awezome."
-        #print "Type "+u"\u2192"+" *help " + u"\u2190"+"  to see what you can do in AwzmChat" + u"\u2661"
-
     def receive_message(self, message, connection):
         response = json.loads(message)
 
@@ -74,7 +59,6 @@ class Client(object):
 
 if __name__ == "__main__":
     client = Client()
-    #client.start('localhost', 9999)
     client.start('78.91.69.239', 9999)
 
     while True:
