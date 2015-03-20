@@ -43,7 +43,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
             self.connection.sendall(json.dumps(return_data))
         else:
             username = self.server.clients[self.connection]
-            return_data = {'timestamp': timestamp, 'sender': username, 'response': 'info', 'content': 'Logged out'}
+            return_data = {'timestamp': timestamp, 'sender': username, 'response': 'info', 'content': 'Logged out! Byebye '+username+"<3"}
             self.connection.sendall(json.dumps(return_data))
             del self.server.clients[self.connection]
 
@@ -65,12 +65,33 @@ class ClientHandler(SocketServer.BaseRequestHandler):
                 return_data = {'timestamp': timestamp, 'sender':username,'response': 'message', 'content': message}
                 self.server.broadcast(json.dumps(return_data))
 
+    def welcome(self):
+        ts = time.time()
+        timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
+        welcomeInfo ="\n---------------------------------------------------------------------\n \
+     __                                              __      __\n \
+    /  \                                            /   \  /   \ \n \
+   / /\ \                  ______                  |     \/     |\n \
+  / /__\ \      _      _   \__  /     __  __        \          / \n \
+ / _____  \    \ \ _ / /    / /__    /  \/  \         \      /\n \
+/_/      \_\    \_/ \_/    /____/   /_/\__/\_\          \  /\n \
+---------------------------------------------------------\/-----------\n\n\
+Welcome to AwzmChat<3 write something awezome - aand be awezome.\n\
+Type -> *help <- to see what you can do in AwzmChat<3"
+        return_data = {'timestamp': timestamp, 'sender': '','response': 'info', 'content': welcomeInfo}
+        self.connection.sendall(json.dumps(return_data))
+
     def getNames(self):
         #username = self.server.clients[self.connection]
         ts = time.time()
         timestamp = datetime.datetime.fromtimestamp(ts).strftime('%d.%m.%Y %H:%M')
         names = self.server.clients.values()
-        return_data = {'timestamp':timestamp, 'sender':'username', 'response':'info', 'content':names}
+
+        print names[0]
+        listNames = ""
+        for name in names:
+            listNames += "\n<3 "+name
+        return_data = {'timestamp':timestamp, 'sender':'username', 'response':'info', 'content':"These are logged in:"+listNames}
         self.connection.sendall(json.dumps(return_data))
 
     def getHelp(self):
@@ -84,7 +105,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
         self.connection = self.request
         self.ip = self.client_address[0]
         self.port = self.client_address[1]
-
+        self.welcome()
         print 'Client connected @' + self.ip + ':' + str(self.port)
         # Wait for data from the client
         # Check if the data exists
@@ -116,6 +137,7 @@ class ClientHandler(SocketServer.BaseRequestHandler):
 
 
 
+
 class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
     allow_reuse_address = True
     messages = []
@@ -123,15 +145,16 @@ class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
 
     def broadcast(self, message):
         for client in self.clients:
+
             if not message.startswith("Cannot send empty message"):
                 client.sendall(message)
-
+        
 
 if __name__ == "__main__":
 
     #HOST = '78.91.48.164'
 
-    HOST, PORT = 'localhost', 9999
+    HOST, PORT = '78.91.69.239', 9999
 
     print 'Server running...'
 
